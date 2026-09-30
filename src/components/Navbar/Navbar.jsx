@@ -1,4 +1,3 @@
-import React from "react";
 import Search from "../Search/Search";
 import Button from "../Button/Button";
 import Logo from "../Logo/Logo";

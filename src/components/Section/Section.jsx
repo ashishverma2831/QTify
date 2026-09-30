@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Section.module.css";
 import { CircularProgress } from "@mui/material";
 import Card from "../Card/Card";
@@ -13,19 +13,31 @@ function Section({ title, data, filterSource, type }) {
   const handleToggle = () => {
     setCarouselToggle((prevState) => !prevState);
   };
+
   useEffect(() => {
-    if (filterSource) {
-      filterSource().then((response) => {
-        const { data } = response;
-        setFilters([...filters, ...data]);
-      });
+    if (!filterSource) {
+      return undefined;
     }
-  }, []);
+
+    let isMounted = true;
+
+    filterSource().then((response) => {
+      const { data: filterData } = response;
+      if (isMounted) {
+        setFilters((currentFilters) => [...currentFilters, ...filterData]);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [filterSource]);
+
   const showFilters = filters.length > 1;
   const cardsToRender = data.filter((card) =>
     showFilters && selectedFilterIndex !== 0
       ? card.genre.key === filters[selectedFilterIndex].key
-      : card
+      : card,
   );
   return (
     <div>

@@ -26,9 +26,7 @@ function TabPanel(props) {
 }
 
 function Filters({ filters, selectedFilterIndex, setSelectedFilterIndex }) {
-  // const [value, setValue] = useState(0);
-
-  const handleChange = (event, newValue) => {
+  const handleChange = (_, newValue) => {
     setSelectedFilterIndex(newValue);
   };
 
@@ -52,11 +50,18 @@ function Filters({ filters, selectedFilterIndex, setSelectedFilterIndex }) {
         }}
       >
         {filters.map((ele, idx) => (
-          <Tab key={idx} className={styles.tabs} label={ele.label} {...a11yProps(idx)} />
+          <Tab
+            key={idx}
+            className={styles.tabs}
+            label={ele.label}
+            {...a11yProps(idx)}
+          />
         ))}
       </Tabs>
       {filters.map((ele, idx) => (
-        <TabPanel key={idx} value={ele.label} index={idx} />
+        <TabPanel key={idx} value={selectedFilterIndex} index={idx}>
+          {ele.label}
+        </TabPanel>
       ))}
     </div>
   );
